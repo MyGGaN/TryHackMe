@@ -100,16 +100,16 @@ IP = "10.10.145.31"  # Update to your target machine
 
 def chitchat(s, msg):
     s.sendto(msg, (IP, 4000))
-    msg, _ = s.recvfrom(1024)
-    return msg
+    data, address = s.recvfrom(1024)
+    return data
 
 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
     # Read hello message
     print(chitchat(s, b"hello"))
 
-    # Send ready and parse out data
+    # Send "ready" and parse the response
     msg = chitchat(s, b"ready")
-    key = msg[4:28]
+    key = msg[4:28]  # The message is fixed, I just eyeballed the offsets
     iv = msg[32:44]
     checksum = msg[104:136]
     print("key =", key)
