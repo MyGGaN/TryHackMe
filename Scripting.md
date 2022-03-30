@@ -108,10 +108,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
     print(chitchat(s, b"hello"))
 
     # Send "ready" and parse the response
-    msg = chitchat(s, b"ready")
-    key = msg[4:28]  # The message is fixed, I just eyeballed the offsets
-    iv = msg[32:44]
-    checksum = msg[104:136]
+    msg = chitchat(s, b"ready").split(b' ')
+    key = msg[0].split(b':')[1]
+    iv = msg[1].split(b':')[1]
+    checksum = msg[14]
     print("key =", key)
     print("iv =", iv)
     print("checksum =", checksum.hex())
